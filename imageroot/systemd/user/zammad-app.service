@@ -21,11 +21,12 @@ ExecStartPre=-runagent discover-smarthost
 ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-app.pid \
     --cidfile %t/zammad-app.ctr-id --cgroups=no-conmon \
     --pod-id-file %t/zammad.pod-id --replace -d --name  zammad-app \
+    --env-file=%S/state/environment \
     --volume zammad-app:/var/www/html/:Z \
     --volume ./config:/tmp:Z \
     --env=NGINX_* \
     --env 'CONFIG_DATABASE_URI="postgresql://postgres:Nethesis,1234@127.0.0.1:5432/zammad"' \
-    ${NGINX_IMAGE}
+    ${ZAMMAD_DOCKER_COMPOSE_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-app.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP zammad-app
 SyslogIdentifier=%u
