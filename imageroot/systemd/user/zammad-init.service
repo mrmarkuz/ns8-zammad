@@ -1,0 +1,36 @@
+#
+# Copyright (C) 2022 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+[Unit]
+Description=Podman  zammad-init.service
+BindsTo=zammad.service
+After=zammad.service postgresql-app.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=%S/state/environment
+EnvironmentFile=-%S/state/smarthost.env
+WorkingDirectory=%S/state
+Restart=always
+TimeoutStopSec=70
+ExecStartPre=/bin/mkdir -p config
+ExecStartPre=/bin/rm -f %t/zammad-init.pid %t/zammad-init.ctr-id
+ExecStartPre=-runagent discover-smarthost
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-init.pid \
+    --cidfile %t/zammad-init.ctr-id --cgroups=no-conmon \
+    --pod-id-file %t/zammad.pod-id --replace -d --name  zammad-init \
+    --env-file=%S/state/environment \
+    --volume zammad-storage:/opt/zammad/storage:Z \
+    --volume ./config:/tmp:Z \    
+    ${ZAMMAD_IMAGE}
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-init.ctr-id -t 10
+ExecReload=/usr/bin/podman kill -s HUP zammad-init
+SyslogIdentifier=%u
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/zammad-init.ctr-id
+PIDFile=%t/zammad-init.pid
+Type=forking
+
+[Install]
+WantedBy=default.target

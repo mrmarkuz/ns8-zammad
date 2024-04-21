@@ -1,0 +1,37 @@
+#
+# Copyright (C) 2022 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+[Unit]
+Description=Podman  zammad-memcached.service
+BindsTo=zammad.service
+After=zammad.service postgresql-app.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=%S/state/environment
+EnvironmentFile=-%S/state/smarthost.env
+WorkingDirectory=%S/state
+Restart=always
+TimeoutStopSec=70
+ExecStartPre=/bin/mkdir -p config
+ExecStartPre=/bin/rm -f %t/zammad-memcached.pid %t/zammad-memcached.ctr-id
+ExecStartPre=-runagent discover-smarthost
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-memcached.pid \
+    --cidfile %t/zammad-memcached.ctr-id --cgroups=no-conmon \
+    --pod-id-file %t/zammad.pod-id --replace -d --name  zammad-memcached \
+    --env-file=%S/state/environment \
+    --volume zammad-memcached:/var/www/html/:Z \
+    --volume ./config:/tmp:Z \    
+    --env MEMCACHE_SERVERS=zammad-memcached:11211 \
+    ${MEMCACHED_IMAGE}
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-memcached.ctr-id -t 10
+ExecReload=/usr/bin/podman kill -s HUP zammad-memcached
+SyslogIdentifier=%u
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/zammad-memcached.ctr-id
+PIDFile=%t/zammad-memcached.pid
+Type=forking
+
+[Install]
+WantedBy=default.target

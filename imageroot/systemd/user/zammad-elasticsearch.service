@@ -1,0 +1,36 @@
+#
+# Copyright (C) 2022 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+[Unit]
+Description=Podman  zammad-elasticsearch.service
+BindsTo=zammad.service
+After=zammad.service postgresql-app.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=%S/state/environment
+EnvironmentFile=-%S/state/smarthost.env
+WorkingDirectory=%S/state
+Restart=always
+TimeoutStopSec=70
+ExecStartPre=/bin/mkdir -p config
+ExecStartPre=/bin/rm -f %t/zammad-elasticsearch.pid %t/zammad-elasticsearch.ctr-id
+ExecStartPre=-runagent discover-smarthost
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-elasticsearch.pid \
+    --cidfile %t/zammad-elasticsearch.ctr-id --cgroups=no-conmon \
+    --pod-id-file %t/zammad.pod-id --replace -d --name  zammad-elasticsearch \
+    --env-file=%S/state/environment \
+    --volume zammad-elasticsearch:/var/www/html/:Z \
+    --volume ./config:/tmp:Z \
+    ${ELASTICSEARCH_IMAGE}
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-elasticsearch.ctr-id -t 10
+ExecReload=/usr/bin/podman kill -s HUP zammad-elasticsearch
+SyslogIdentifier=%u
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/zammad-elasticsearch.ctr-id
+PIDFile=%t/zammad-elasticsearch.pid
+Type=forking
+
+[Install]
+WantedBy=default.target

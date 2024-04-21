@@ -1,0 +1,39 @@
+#
+# Copyright (C) 2022 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+[Unit]
+Description=Podman zammad-postgresql.service
+BindsTo=zammad.service
+After=zammad.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=%S/state/environment
+# EnvironmentFile=%S/state/secrets/passwords.secret
+Restart=always
+TimeoutStopSec=70
+ExecStartPre=/bin/rm -f %t/zammad-postgresql.pid %t/zammad-postgresql.ctr-id
+ExecStartPre=/bin/mkdir -p %S/state/restore/
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-postgresql.pid \
+    --cidfile %t/zammad-postgresql.ctr-id --cgroups=no-conmon \
+    --pod-id-file %t/zammad.pod-id --replace -d --name zammad-postgresql \
+    --env-file=%S/state/environment \
+    --volume postgres-data:/var/lib/postgresql/data:Z \
+    --volume %S/state/restore/:/docker-entrypoint-initdb.d/:Z \
+    --env POSTGRES_USER=zammad \
+    --env POSTGRES_PASSWORD=Nethesis,1234 \
+    --env POSTGRES_DB=zammad \
+    --env TZ=UTC \
+    ${POSTGRES_IMAGE}
+ExecStartPost=/usr/bin/bash -c "while ! podman  exec zammad-postgresql psql -U postgres -d zammad ;  do sleep 5 ; done"
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-postgresql.ctr-id -t 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/zammad-postgresql.ctr-id
+ExecReload=/usr/bin/podman kill -s HUP zammad-postgresql
+SyslogIdentifier=%u
+PIDFile=%t/zammad-postgresql.pid
+Type=forking
+
+[Install]
+WantedBy=default.target
