@@ -10,7 +10,7 @@
 
 [Unit]
 Description=Podman zammad.service
-Requires=postgresql-app.service zammad-app.service
+Requires=postgresql-app.service zammad-app.service zammad-
 Before=postgresql-app.service zammad-app.service
 
 [Service]

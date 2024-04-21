@@ -6,7 +6,7 @@
 [Unit]
 Description=Podman  zammad-memcached.service
 BindsTo=zammad.service
-After=zammad.service postgresql-app.service
+After=zammad.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -21,11 +21,8 @@ ExecStartPre=-runagent discover-smarthost
 ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-memcached.pid \
     --cidfile %t/zammad-memcached.ctr-id --cgroups=no-conmon \
     --pod-id-file %t/zammad.pod-id --replace -d --name  zammad-memcached \
-    --env-file=%S/state/environment \
-    --volume zammad-memcached:/var/www/html/:Z \
-    --volume ./config:/tmp:Z \    
-    --env MEMCACHE_SERVERS=zammad-memcached:11211 \
-    ${MEMCACHED_IMAGE}
+    --env-file=%S/state/environment \    
+    ${MEMCACHED_IMAGE} memcached -m 256M
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-memcached.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP zammad-memcached
 SyslogIdentifier=%u

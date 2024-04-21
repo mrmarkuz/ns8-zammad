@@ -4,9 +4,9 @@
 #
 
 [Unit]
-Description=Podman  zammad-init.service
+Description=Podman  zammad-nginx.service
 BindsTo=zammad.service
-After=zammad.service zammad-postgresql.service zammad-memcached.service zammad-redis.service
+After=zammad.service zammad-postgresql.service zammad-memcached.service zammad-redis.service zammad-railsserver.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -15,14 +15,13 @@ EnvironmentFile=-%S/state/smarthost.env
 WorkingDirectory=%S/state
 Restart=always
 TimeoutStopSec=70
-ExecStartPre=/bin/rm -f %t/zammad-init.pid %t/zammad-init.ctr-id
+ExecStartPre=/bin/rm -f %t/zammad-nginx.pid %t/zammad-nginx.ctr-id
 ExecStartPre=-runagent discover-smarthost
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-init.pid \
-    --cidfile %t/zammad-init.ctr-id --cgroups=no-conmon \
-    --pod-id-file %t/zammad.pod-id --replace -d --name  zammad-init \
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-nginx.pid \
+    --cidfile %t/zammad-nginx.ctr-id --cgroups=no-conmon \
+    --pod-id-file %t/zammad.pod-id --replace -d --name  zammad-nginx \
     --env-file=%S/state/environment \
     --volume zammad-storage:/opt/zammad/storage:Z \
-    --user 0:0 \
     --env MEMCACHE_SERVERS=zammad-memcached:11211 \
     --env POSTGRESQL_DB=zammad_production \
     --env POSTGRESQL_HOST=zammad-postgresql \
@@ -30,12 +29,12 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-init.pid \
     --env POSTGRESQL_PASS=zammad \
     --env POSTGRESQL_PORT=5432 \
     --env REDIS_URL=redis://zammad-redis:6379 \
-    ${ZAMMAD_IMAGE} zammad-init
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-init.ctr-id -t 10
-ExecReload=/usr/bin/podman kill -s HUP zammad-init
+    ${ZAMMAD_IMAGE} zammad-nginx
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-nginx.ctr-id -t 10
+ExecReload=/usr/bin/podman kill -s HUP zammad-nginx
 SyslogIdentifier=%u
-ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/zammad-init.ctr-id
-PIDFile=%t/zammad-init.pid
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/zammad-nginx.ctr-id
+PIDFile=%t/zammad-nginx.pid
 Type=forking
 
 [Install]

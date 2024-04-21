@@ -6,7 +6,7 @@
 [Unit]
 Description=Podman  zammad-backup.service
 BindsTo=zammad.service
-After=zammad.service zammad-railsserver.service postgresql-app.service
+After=zammad.service zammad-railsserver.service zammad-postgresql.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -27,7 +27,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-backup.pid \
     --volume zammad-backup:/var/tmp/zammad:z \
     --volume zammad-storage:/opt/zammad/storage:ro \
     --volume ./scripts/backup.sh:/usr/local/bin/backup.sh:ro \
-    ${POSTGRES_IMAGE}
+    ${POSTGRES_IMAGE} zammad-backup
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-backup.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP zammad-backup
 SyslogIdentifier=%u

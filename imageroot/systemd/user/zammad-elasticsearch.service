@@ -6,7 +6,7 @@
 [Unit]
 Description=Podman  zammad-elasticsearch.service
 BindsTo=zammad.service
-After=zammad.service postgresql-app.service
+After=zammad.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -22,8 +22,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-elasticsearch.pid \
     --cidfile %t/zammad-elasticsearch.ctr-id --cgroups=no-conmon \
     --pod-id-file %t/zammad.pod-id --replace -d --name  zammad-elasticsearch \
     --env-file=%S/state/environment \
-    --volume zammad-elasticsearch:/var/www/html/:Z \
-    --volume ./config:/tmp:Z \
+    --volume elasticsearch-data:/bitnami/elasticsearch/data:z \
     ${ELASTICSEARCH_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-elasticsearch.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP zammad-elasticsearch

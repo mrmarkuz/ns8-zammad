@@ -6,7 +6,7 @@
 [Unit]
 Description=Podman  zammad-app.service
 BindsTo=zammad.service
-After=zammad.service postgresql-app.service
+After=zammad.service zammad-postgresql.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
