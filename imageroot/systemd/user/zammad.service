@@ -10,8 +10,8 @@
 
 [Unit]
 Description=Podman zammad.service
-Requires=postgresql-app.service zammad-app.service zammad-
-Before=postgresql-app.service zammad-app.service
+Requires=zammad-postgresql.service zammad-redis.service zammad-memcached.service zammad-railsserver.service zammad-init.service zammad-elasticsearch.service zammad-nginx.service zammad-scheduler.service zammad-websocket.service zammad-backup.service
+Before=zammad-postgresql.service zammad-redis.service zammad-memcached.service zammad-railsserver.service zammad-init.service zammad-elasticsearch.service zammad-nginx.service zammad-scheduler.service zammad-websocket.service zammad-backup.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
