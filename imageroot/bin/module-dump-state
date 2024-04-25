@@ -8,4 +8,4 @@
 set -e
 
 echo "Dumping zammad postgres database"
-podman exec postgresql-app pg_dump -U postgres --format=c  zammad > zammad.pg_dump
+podman exec zammad-postgresql pg_dump -U zammad --format=c  zammad_production > zammad.pg_dump
