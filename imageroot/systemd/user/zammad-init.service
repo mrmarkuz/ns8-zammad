@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2022 Nethesis S.r.l.
+# Copyright (C) 2024 Nethesis S.r.l.
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
@@ -13,7 +13,7 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 EnvironmentFile=%S/state/environment
 EnvironmentFile=-%S/state/smarthost.env
 WorkingDirectory=%S/state
-Restart=always
+Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/zammad-init.pid %t/zammad-init.ctr-id
 ExecStartPre=-runagent discover-smarthost

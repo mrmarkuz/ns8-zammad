@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2022 Nethesis S.r.l.
+# Copyright (C) 2024 Nethesis S.r.l.
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
@@ -29,6 +29,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-nginx.pid \
     --env POSTGRESQL_PASS=zammad \
     --env POSTGRESQL_PORT=5432 \
     --env REDIS_URL=redis://zammad-redis:6379 \
+    --env NGINX_SERVER_SCHEME=https \
     ${ZAMMAD_IMAGE} zammad-nginx
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-nginx.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP zammad-nginx

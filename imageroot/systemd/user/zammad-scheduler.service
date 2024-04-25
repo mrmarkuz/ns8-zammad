@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2022 Nethesis S.r.l.
+# Copyright (C) 2024 Nethesis S.r.l.
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
@@ -7,6 +7,7 @@
 Description=Podman  zammad-scheduler.service
 BindsTo=zammad.service
 After=zammad.service zammad-postgresql.service zammad-memcached.service zammad-redis.service
+
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 EnvironmentFile=%S/state/environment

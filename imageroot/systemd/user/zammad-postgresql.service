@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2022 Nethesis S.r.l.
+# Copyright (C) 2024 Nethesis S.r.l.
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
@@ -11,7 +11,6 @@ After=zammad.service
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 EnvironmentFile=%S/state/environment
-# EnvironmentFile=%S/state/secrets/passwords.secret
 Restart=always
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/zammad-postgresql.pid %t/zammad-postgresql.ctr-id
