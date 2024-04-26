@@ -29,7 +29,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-railsserver.pid \
     --env POSTGRESQL_PASS=zammad \
     --env POSTGRESQL_PORT=5432 \
     --env REDIS_URL=redis://zammad-redis:6379 \
-    ${ZAMMAD_IMAGE} zammad-railsserver
+    ${ZAMMAD_DOCKER_COMPOSE_IMAGE} zammad-railsserver
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-railsserver.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP zammad-railsserver
 SyslogIdentifier=%u
