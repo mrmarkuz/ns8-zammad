@@ -23,13 +23,12 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-postgresql.pid \
     --volume %S/state/restore/:/docker-entrypoint-initdb.d/:Z \
     --env POSTGRES_DB=zammad_production \
     --env POSTGRES_USER=zammad \
-    --env POSTGRES_PASS= \
+    --env POSTGRES_PASSWORD=Nethesis,1234 \
     --env POSTGRESQL_DB=zammad_production \
     --env POSTGRESQL_HOST=zammad-postgresql \
     --env POSTGRESQL_USER=zammad \
-    --env POSTGRESQL_PASS=zammad \
+    --env POSTGRESQL_PASS=Nethesis,1234 \
     --env POSTGRESQL_PORT=5432 \
-    --env POSTGRES_HOST_AUTH_METHOD=trust \
     --env TZ=UTC \
     ${POSTGRES_IMAGE}
 ExecStartPost=/usr/bin/bash -c "while ! podman  exec zammad-postgresql psql -U zammad -d zammad_production ;  do sleep 5 ; done"
