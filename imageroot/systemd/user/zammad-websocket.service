@@ -28,7 +28,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-websocket.pid \
     --env POSTGRESQL_PASS=Nethesis,1234 \
     --env POSTGRESQL_PORT=5432 \
     --env REDIS_URL=redis://zammad-redis:6379 \
-    ${ZAMMAD_DOCKER_COMPOSE_IMAGE} zammad-websocket
+    ${ZAMMAD_IMAGE} zammad-websocket
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-websocket.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP zammad-websocket
 SyslogIdentifier=%u
