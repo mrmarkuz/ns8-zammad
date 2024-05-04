@@ -6,7 +6,7 @@
 [Unit]
 Description=Podman  zammad-scheduler.service
 BindsTo=zammad.service
-After=zammad.service zammad-postgresql.service zammad-memcached.service zammad-redis.service
+After=zammad.service zammad-postgresql.service zammad-memcached.service zammad-redis.service zammad-railsserver.service zammad-init.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -28,6 +28,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-scheduler.pid \
     --env POSTGRESQL_USER=zammad \
     --env POSTGRESQL_PASS=Nethesis,1234 \
     --env POSTGRESQL_PORT=5432 \
+    --env POSTGRESQL_OPTIONS=?pool=50 \
     --env REDIS_URL=redis://zammad-redis:6379 \
     ${ZAMMAD_IMAGE} zammad-scheduler
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-scheduler.ctr-id -t 10

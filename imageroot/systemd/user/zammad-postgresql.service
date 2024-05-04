@@ -29,6 +29,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-postgresql.pid \
     --env POSTGRESQL_USER=zammad \
     --env POSTGRESQL_PASS=Nethesis,1234 \
     --env POSTGRESQL_PORT=5432 \
+    --env POSTGRESQL_OPTIONS=?pool=50 \
     --env TZ=UTC \
     ${POSTGRES_IMAGE}
 ExecStartPost=/usr/bin/bash -c "while ! podman  exec zammad-postgresql psql -U zammad -d zammad_production ;  do sleep 5 ; done"

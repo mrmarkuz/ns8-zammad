@@ -6,7 +6,8 @@
 [Unit]
 Description=Podman  zammad-websocket.service
 BindsTo=zammad.service
-After=zammad.service zammad-postgresql.service zammad-memcached.service zammad-redis.service
+After=zammad.service zammad-postgresql.service zammad-memcached.service zammad-redis.service zammad-railsserver.service zammad-init.service zammad-scheduler.service zammad-nginx.service
+
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 EnvironmentFile=%S/state/environment
@@ -27,6 +28,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-websocket.pid \
     --env POSTGRESQL_USER=zammad \
     --env POSTGRESQL_PASS=Nethesis,1234 \
     --env POSTGRESQL_PORT=5432 \
+    --env POSTGRESQL_OPTIONS=?pool=50 \
     --env REDIS_URL=redis://zammad-redis:6379 \
     ${ZAMMAD_IMAGE} zammad-websocket
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-websocket.ctr-id -t 10
