@@ -8,7 +8,7 @@ Install via Software Center by adding my [repository](https://repo.mrmarkuz.com)
 
 or via CLI:
 
-    add-module ghcr.io/nethserver/zammad:latest 1
+    add-module ghcr.io/mrmarkuz/zammad:latest 1
 
 ## Configure
 
