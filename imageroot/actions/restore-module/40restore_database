@@ -11,7 +11,7 @@ exec 1>&2 # Redirect any output to the journal (stderr)
 mkdir -vp restore
 cat - >restore/zammad_restore.sh <<'EOS'
 # Read dump file from standard input:
-pg_restore --no-owner --no-privileges -U postgres -d zammad
+pg_restore --no-owner --no-privileges -U zammad -d zammad
 ec=$?
 docker_temp_server_stop
 exit $ec
