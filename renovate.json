@@ -6,7 +6,7 @@
     {
       "fileMatch": ["build-images.sh"],
       "matchStrings": [
-        "ghcr\\.io/zammad/zammad:(?<currentValue>[-0-9\\.a-z]+)"
+        "ghcr\\.io/zammad/zammad:(?<currentValue>[^\\s]+)"
       ],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "zammad/zammad"
