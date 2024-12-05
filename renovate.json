@@ -1,6 +1,15 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
+  "extends": ["config:base"],
+  "ignorePaths": ["**/ui/**", "**/.devcontainer/**"],
+  "regexManagers": [
+    {
+      "fileMatch": ["build-images.sh"],
+      "matchStrings": [
+        "ghcr\\.io/zammad/zammad:(?<currentValue>[-0-9\\.a-z]+)"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "zammad/zammad"
+    }
   ]
 }
