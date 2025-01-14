@@ -18,6 +18,59 @@
       ],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "zammad/zammad"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["build-images.sh"],
+      "matchStrings": ["docker\\.io/postgres:(?<currentValue>[-0-9\\.a-z]+)"],
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "postgres"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["build-images.sh"],
+      "matchStrings": ["docker\\.io/bitnami/elasticsearch:(?<currentValue>[-0-9\\.a-z]+)"],
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "bitnami/elasticsearch"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["build-images.sh"],
+      "matchStrings": ["docker\\.io/redis:(?<currentValue>[-0-9\\.a-z]+)"],
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "redis"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["build-images.sh"],
+      "matchStrings": ["docker\\.io/memcached:(?<currentValue>[-0-9\\.a-z]+)"],
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "memcached"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "zammad/zammad"
+      ],
+      "allowedVersions": "< 7",
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<build>\\d+)"
+    },
+    {
+      "matchPackageNames": ["postgres"],
+      "allowedVersions": "< 16"
+    },
+    {
+      "matchPackageNames": ["bitnami/elasticsearch"],
+      "allowedVersions": "< 9"
+    },
+    {
+      "matchPackageNames": ["redis"],
+      "allowedVersions": "< 9"
+    },
+    {
+      "matchPackageNames": ["memcached"],
+      "allowedVersions": "< 7.3"
     }
   ]
 }
