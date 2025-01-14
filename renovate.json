@@ -14,10 +14,10 @@
         "build-images.sh"
       ],
       "matchStrings": [
-        "ghcr\\.io/zammad/zammad:(?<currentValue>[^\\s]+)"
+        "docker\\.io/zammad/zammad-docker-compose:(?<currentValue>[^\\s]+)"
       ],
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "zammad/zammad"
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "zammad/zammad-docker-compose"
     },
     {
       "customType": "regex",
@@ -51,9 +51,8 @@
   "packageRules": [
     {
       "matchPackageNames": [
-        "zammad/zammad"
+        "zammad/zammad-docker-compose"
       ],
-      "sourceUrl": "https://ghcr.io/zammad/zammad",
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<build>\\d+)"
     },
     {
@@ -70,7 +69,7 @@
     },
     {
       "matchPackageNames": ["memcached"],
-      "allowedVersions": "< 7.3"
+      "allowedVersions": "< 7"
     }
   ]
 }
