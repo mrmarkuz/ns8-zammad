@@ -52,8 +52,9 @@
     {
       "matchPackageNames": [
         "zammad/zammad"
-      ],      
-      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\-(?<build>\\d+)"
+      ],
+      "sourceUrl": "https://ghcr.io/zammad/zammad",
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<build>\\d+)"
     },
     {
       "matchPackageNames": ["postgres"],
