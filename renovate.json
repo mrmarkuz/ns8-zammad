@@ -36,7 +36,7 @@
     {
       "customType": "regex",
       "fileMatch": ["build-images.sh"],
-      "matchStrings": ["docker\\.io/redis:(?<currentValue>[^\\s]+)"],
+      "matchStrings": ["docker\\.io/redis:(?<currentValue>[^\\s]+)\""],
       "datasourceTemplate": "docker",
       "depNameTemplate": "redis"
     },
@@ -71,7 +71,7 @@
     {
       "matchPackageNames": ["memcached"],
       "allowedVersions": "< 2",
-      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>.*)"
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>.*)$"
     }
   ]
 }
