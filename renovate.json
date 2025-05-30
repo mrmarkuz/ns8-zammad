@@ -10,8 +10,8 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": [
-        "build-images.sh"
+      "managerFilePatterns": [
+        "/build-images.sh/"
       ],
       "matchStrings": [
         "docker\\.io/zammad/zammad-docker-compose:(?<currentValue>[^\\s]+)"
@@ -21,29 +21,45 @@
     },
     {
       "customType": "regex",
-      "fileMatch": ["build-images.sh"],
-      "matchStrings": ["docker\\.io/postgres:(?<currentValue>[-0-9\\.a-z]+)"],
+      "managerFilePatterns": [
+        "/build-images.sh/"
+      ],
+      "matchStrings": [
+        "docker\\.io/postgres:(?<currentValue>[-0-9\\.a-z]+)"
+      ],
       "datasourceTemplate": "docker",
       "depNameTemplate": "postgres"
     },
     {
       "customType": "regex",
-      "fileMatch": ["build-images.sh"],
-      "matchStrings": ["docker\\.io/bitnami/elasticsearch:(?<currentValue>[-0-9\\.a-z]+)"],
+      "managerFilePatterns": [
+        "/build-images.sh/"
+      ],
+      "matchStrings": [
+        "docker\\.io/bitnami/elasticsearch:(?<currentValue>[-0-9\\.a-z]+)"
+      ],
       "datasourceTemplate": "docker",
       "depNameTemplate": "bitnami/elasticsearch"
     },
     {
       "customType": "regex",
-      "fileMatch": ["build-images.sh"],
-      "matchStrings": ["docker\\.io/redis:(?<currentValue>[-0-9\\.a-z]+)"],
+      "managerFilePatterns": [
+        "/build-images.sh/"
+      ],
+      "matchStrings": [
+        "docker\\.io/redis:(?<currentValue>[-0-9\\.a-z]+)"
+      ],
       "datasourceTemplate": "docker",
       "depNameTemplate": "redis"
     },
     {
       "customType": "regex",
-      "fileMatch": ["build-images.sh"],
-      "matchStrings": ["docker\\.io/memcached:(?<currentValue>[-0-9\\.a-z]+)"],
+      "managerFilePatterns": [
+        "/build-images.sh/"
+      ],
+      "matchStrings": [
+        "docker\\.io/memcached:(?<currentValue>[-0-9\\.a-z]+)"
+      ],
       "datasourceTemplate": "docker",
       "depNameTemplate": "memcached"
     }
@@ -56,19 +72,27 @@
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<build>\\d+)"
     },
     {
-      "matchPackageNames": ["postgres"],
+      "matchPackageNames": [
+        "postgres"
+      ],
       "allowedVersions": "< 16"
     },
     {
-      "matchPackageNames": ["bitnami/elasticsearch"],
+      "matchPackageNames": [
+        "bitnami/elasticsearch"
+      ],
       "allowedVersions": "< 9"
     },
     {
-      "matchPackageNames": ["redis"],
-      "allowedVersions": "< 8"      
+      "matchPackageNames": [
+        "redis"
+      ],
+      "allowedVersions": "< 8"
     },
     {
-      "matchPackageNames": ["memcached"],
+      "matchPackageNames": [
+        "memcached"
+      ],
       "allowedVersions": "< 2"
     }
   ]
