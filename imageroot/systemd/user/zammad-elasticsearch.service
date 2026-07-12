@@ -22,7 +22,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-elasticsearch.pid \
     --cidfile %t/zammad-elasticsearch.ctr-id --cgroups=no-conmon \
     --pod-id-file %t/zammad.pod-id --replace -d --name  zammad-elasticsearch \
     --env-file=%S/state/environment \
-    --volume elasticsearch-data:/bitnami/elasticsearch/data:z \
+    --volume elasticsearch-data:/usr/share/elasticsearch/data:z \
     ${ELASTICSEARCH_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-elasticsearch.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP zammad-elasticsearch
