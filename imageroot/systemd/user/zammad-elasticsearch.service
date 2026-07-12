@@ -22,6 +22,9 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-elasticsearch.pid \
     --cidfile %t/zammad-elasticsearch.ctr-id --cgroups=no-conmon \
     --pod-id-file %t/zammad.pod-id --replace -d --name  zammad-elasticsearch \
     --env-file=%S/state/environment \
+    --env discovery.type=single-node \
+    --env xpack.security.enabled=false \
+    --env ES_JAVA_OPTS="-Xms1g -Xmx1g" \
     --volume elasticsearch-data:/usr/share/elasticsearch/data:z \
     ${ELASTICSEARCH_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-elasticsearch.ctr-id -t 10

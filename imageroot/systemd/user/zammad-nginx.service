@@ -22,7 +22,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-nginx.pid \
     --pod-id-file %t/zammad.pod-id --replace -d --name  zammad-nginx \
     --env-file=%S/state/environment \
     --volume zammad-storage:/opt/zammad/storage:z \
-    --volume zammad-backup:/var/tmp/zammad:ro \
+#    --volume zammad-backup:/var/tmp/zammad:ro \
     --env MEMCACHE_SERVERS=zammad-memcached:11211 \
     --env POSTGRESQL_DB=zammad_production \
     --env POSTGRESQL_HOST=zammad-postgresql \
@@ -32,6 +32,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-nginx.pid \
     --env POSTGRESQL_OPTIONS=?pool=50 \
     --env REDIS_URL=redis://zammad-redis:6379 \
     --env NGINX_SERVER_SCHEME=https \
+    --env ZAMMAD_RAILSSERVER_HOST=127.0.0.1 \
     ${ZAMMAD_IMAGE} zammad-nginx
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/zammad-nginx.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP zammad-nginx
