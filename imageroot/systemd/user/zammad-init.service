@@ -22,7 +22,6 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/zammad-init.pid \
     --pod-id-file %t/zammad.pod-id --replace -d --name  zammad-init \
     --env-file=%S/state/environment \
     --volume zammad-storage:/opt/zammad/storage:z \
-#    --volume zammad-backup:/var/tmp/zammad:ro \
     --user 0:0 \
     --env MEMCACHE_SERVERS=zammad-memcached:11211 \
     --env POSTGRESQL_DB=zammad_production \
