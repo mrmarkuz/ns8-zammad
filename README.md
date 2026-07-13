@@ -20,7 +20,7 @@ Zammad provides a console to for example reset passwords.
 
 To run the console:
 
-    runagent -m zammad1 podman exec -ti zammad-railsserver /docker-entrypoint.sh rails c
+    runagent -m zammad1 podman exec -ti zammad-railsserver bundle exec rails c
 
 - [Zammad console docs](https://docs.zammad.org/en/latest/admin/console.html#working-on-the-console)
 
@@ -28,7 +28,7 @@ To run the console:
 
 This is sometimes necessary after updates.
 
-    runagent -m zammad1 podman exec -ti zammad-railsserver /docker-entrypoint.sh rake zammad:searchindex:rebuild
+    runagent -m zammad1 podman exec -ti zammad-railsserver bundle exec rake zammad:searchindex:rebuild
     
 ## Uninstall
 
