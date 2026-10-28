@@ -1,7 +1,11 @@
 {
   "name": "zammad",
   "description": {
-    "en": "Zammad is an open source user support/ticketing solution"
+    "en": "Zammad is a free, open-source helpdesk and customer support ticketing system",
+    "de": "Zammad ist ein kostenloses Open-Source-Helpdesk- und Kundensupport-Ticketing-System",
+    "fr": "Zammad est un système gratuit et open source de gestion des demandes (ticketing) dédié au service client et au support technique",
+    "it": "Zammad è un sistema di helpdesk e di gestione dei ticket di assistenza clienti, gratuito e open source",
+    "es": "Zammad es un sistema de gestión de tickets para mesas de ayuda y atención al cliente, de código abierto y gratuito"
   },
   "categories": ["collaboration"],
   "authors": [
