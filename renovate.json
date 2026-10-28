@@ -8,11 +8,6 @@
             "matchDatasources": ["docker"],
             "matchPackageNames": ["zammad/zammad-docker-compose"],
             "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<build>.+)$"
-        },
-        {
-            "matchDatasources": ["docker"],
-            "matchPackageNames": ["mongo"],
-            "allowedVersions": "8.0.*"
         }
     ]
 }
