@@ -21,7 +21,7 @@ container=$(buildah from scratch)
 # Reuse existing nodebuilder-zammad container, to speed up builds
 if ! buildah containers --format "{{.ContainerName}}" | grep -q nodebuilder-zammad; then
     echo "Pulling NodeJS runtime..."
-    buildah from --name nodebuilder-zammad -v "${PWD}:/usr/src:Z" docker.io/library/node:24.22.1-bookworm
+    buildah from --name nodebuilder-zammad -v "${PWD}:/usr/src:Z" docker.io/library/node:24.22.1-slim
 fi
 
 echo "Build static UI files with node..."
@@ -29,7 +29,7 @@ buildah run \
     --workingdir=/usr/src/ui \
     --env="NODE_OPTIONS=--openssl-legacy-provider" \
     nodebuilder-zammad \
-    sh -c "yarn install && yarn build"
+	sh -c "(command -v corepack >/dev/null || npm install -g corepack) && corepack enable && yarn install && yarn build"
 
 # Add imageroot directory to the container image
 buildah add "${container}" imageroot /imageroot
