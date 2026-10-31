@@ -45,7 +45,7 @@ buildah config --entrypoint=/ \
     --label="org.nethserver.tcp-ports-demand=1" \
     --label="org.nethserver.rootfull=0" \
 	--label="org.nethserver.min-core=3.12.4-0" \
-    --label="org.nethserver.images=docker.io/postgres:17.11-alpine docker.io/elasticsearch:9.5.5 ghcr.io/zammad/zammad:7.2.2-0029 docker.io/memcached:1.6.45-alpine docker.io/redis:8.10.3-alpine" \
+    --label="org.nethserver.images=docker.io/postgres:18.6-alpine docker.io/elasticsearch:9.5.5 ghcr.io/zammad/zammad:7.2.2-0029 docker.io/memcached:1.6.45-alpine docker.io/redis:8.10.3-alpine" \
     "${container}"
 # Commit the image
 buildah commit "${container}" "${repobase}/${reponame}"
