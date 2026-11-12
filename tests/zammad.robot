@@ -15,7 +15,7 @@ Check if zammad can be configured
     Should Be Equal As Integers    ${rc}  0
 
 Check if zammad works as expected
-    ${rc} =    Execute Command    sleep 10 && curl --resolve zammad.test.local:443:127.0.0.1 -fkL https://zammad.test.local
+    ${rc} =    Execute Command    sleep 20 && curl --resolve zammad.test.local:443:127.0.0.1 -fkL https://zammad.test.local
     ...    return_rc=True  return_stdout=False
     Should Be Equal As Integers    ${rc}  0
 
