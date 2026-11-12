@@ -14,14 +14,17 @@ images=()
 repobase="${REPOBASE:-ghcr.io/mrmarkuz}"
 # Configure the image name
 reponame="zammad"
-
+# Node.js 25+ no longer ships Corepack, install it from npm
+# renovate: datasource=npm packageName=corepack
+corepack_version=0.36.0
 # Create a new empty container image
 container=$(buildah from scratch)
 
 # Reuse existing nodebuilder-zammad container, to speed up builds
 if ! buildah containers --format "{{.ContainerName}}" | grep -q nodebuilder-zammad; then
     echo "Pulling NodeJS runtime..."
-    buildah from --name nodebuilder-zammad -v "${PWD}:/usr/src:Z" docker.io/library/node:26.12.1-slim
+    buildah from --name nodebuilder-zammad -v "${PWD}:/usr/src:Z" docker.io/library/node:26.13.0-slim
+    buildah run nodebuilder-zammad sh -c "npm install -g corepack@${corepack_version} && corepack enable"
 fi
 
 echo "Build static UI files with node..."
@@ -29,7 +32,7 @@ buildah run \
     --workingdir=/usr/src/ui \
     --env="NODE_OPTIONS=--openssl-legacy-provider" \
     nodebuilder-zammad \
-	sh -c "(command -v corepack >/dev/null || npm install -g corepack) && corepack enable && yarn install && yarn build"
+	sh -c "yarn install && yarn build"
 
 # Add imageroot directory to the container image
 buildah add "${container}" imageroot /imageroot
@@ -45,7 +48,7 @@ buildah config --entrypoint=/ \
     --label="org.nethserver.tcp-ports-demand=1" \
     --label="org.nethserver.rootfull=0" \
 	--label="org.nethserver.min-core=3.12.4-0" \
-    --label="org.nethserver.images=docker.io/postgres:17.11-alpine docker.io/elasticsearch:9.5.5 ghcr.io/zammad/zammad:7.2.2-0029 docker.io/memcached:1.6.45-alpine docker.io/redis:8.10.3-alpine" \
+    --label="org.nethserver.images=docker.io/postgres:17.11-alpine docker.io/elasticsearch:9.5.5 ghcr.io/zammad/zammad:7.2.3-0001 docker.io/memcached:1.6.45-alpine docker.io/redis:8.10.3-alpine" \
     "${container}"
 # Commit the image
 buildah commit "${container}" "${repobase}/${reponame}"
